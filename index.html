@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T Algorithm - Visual Experiment</title>
+  <style>
+    :root {
+      --bg-1: #f4efe6;
+      --bg-2: #d7e5ea;
+      --ink: #1b1c1f;
+      --muted: #4c5056;
+      --accent: #ff6b35;
+      --accent-2: #0f7b6c;
+      --card: #fffaf3;
+      --line-a: #204051;
+      --line-b: #ff6b35;
+      --line-c: #0f7b6c;
+      --shadow: rgba(18, 22, 28, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255, 107, 53, 0.2), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(15, 123, 108, 0.18), transparent 26%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+      animation: rise 650ms ease-out;
+    }
+
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px var(--shadow);
+      padding: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 2vw + 1rem, 2.3rem);
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e5dfd6;
+      padding: 8px 6px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: #24303a;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .chart {
+      width: 100%;
+      height: 320px;
+      display: block;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #ece4d9;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #2d3339;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .sample-box {
+      display: grid;
+      gap: 8px;
+    }
+
+    .perm {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 1.4rem;
+      color: #24303a;
+      background: #fff;
+      border: 1px solid #ebe2d6;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .small {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>T Algorithm (Plain Changes Transitions)</h1>
+      <p>
+        Visualization of the Offline and Online phases for n=3..10. The Offline phase precomputes
+        adjacent-swap transition indexes; the Online phase applies them to generate permutations.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Results Table</h2>
+      <div style="overflow:auto;">
+        <table id="results-table"></table>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Operations Growth</h2>
+        <canvas id="ops-chart" class="chart" width="900" height="320"></canvas>
+        <div class="legend">
+          <span class="legend-item"><span class="dot" style="background:var(--line-a)"></span>Comparisons</span>
+          <span class="legend-item"><span class="dot" style="background:var(--line-b)"></span>Local assignments</span>
+          <span class="legend-item"><span class="dot" style="background:var(--line-c)"></span>Vector assignments</span>
+        </div>
+      </article>
+
+      <article class="card sample-box">
+        <h2>Didactic Example (Online)</h2>
+        <div id="sample-meta" class="small"></div>
+        <div id="perm-view" class="perm">-</div>
+        <div class="small">At each step, only one adjacent pair changes.</div>
+      </article>
+    </section>
+  </main>
+
+  <script src="results.js"></script>
+  <script>
+    function fmt(v) {
+      return Number(v).toLocaleString("en-US");
+    }
+
+    function sec(v) {
+      return Number(v).toFixed(6);
+    }
+
+    function buildTable(rows) {
+      const table = document.getElementById("results-table");
+      const headers = [
+        "n",
+        "n!",
+        "Transitions",
+        "Offline Cmp",
+        "Offline Loc",
+        "Offline Vec",
+        "Offline Time (s)",
+        "Online Cmp",
+        "Online Loc",
+        "Online Vec",
+        "Online Time (s)",
+        "Total Time (s)"
+      ];
+
+      let html = "<thead><tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr></thead><tbody>";
+      for (const r of rows) {
+        html += "<tr>" + [
+          r.n,
+          fmt(r.permutations),
+          fmt(r.transitions),
+          fmt(r.offline.comparisons),
+          fmt(r.offline.local_assignments),
+          fmt(r.offline.vector_assignments),
+          sec(r.offline.time_seconds),
+          fmt(r.online.comparisons),
+          fmt(r.online.local_assignments),
+          fmt(r.online.vector_assignments),
+          sec(r.online.time_seconds),
+          sec(r.total.time_seconds)
+        ].map(v => `<td>${v}</td>`).join("") + "</tr>";
+      }
+      html += "</tbody>";
+      table.innerHTML = html;
+    }
+
+    function drawChart(rows) {
+      const canvas = document.getElementById("ops-chart");
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      const p = { left: 58, right: 20, top: 20, bottom: 42 };
+
+      const xs = rows.map(r => r.n);
+      const cmp = rows.map(r => r.total.comparisons);
+      const loc = rows.map(r => r.total.local_assignments);
+      const vec = rows.map(r => r.total.vector_assignments);
+      const maxY = Math.max(...cmp, ...loc, ...vec) * 1.08;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.strokeStyle = "#d9d1c4";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(p.left, p.top);
+      ctx.lineTo(p.left, h - p.bottom);
+      ctx.lineTo(w - p.right, h - p.bottom);
+      ctx.stroke();
+
+      const xToPx = (x, i) => {
+        const t = xs.length === 1 ? 0 : i / (xs.length - 1);
+        return p.left + t * (w - p.left - p.right);
+      };
+      const yToPx = y => h - p.bottom - (y / maxY) * (h - p.top - p.bottom);
+
+      function line(data, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        data.forEach((v, i) => {
+          const x = xToPx(xs[i], i);
+          const y = yToPx(v);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+
+      line(cmp, getComputedStyle(document.documentElement).getPropertyValue("--line-a"));
+      line(loc, getComputedStyle(document.documentElement).getPropertyValue("--line-b"));
+      line(vec, getComputedStyle(document.documentElement).getPropertyValue("--line-c"));
+
+      ctx.fillStyle = "#45515d";
+      ctx.font = "12px Trebuchet MS";
+      xs.forEach((n, i) => {
+        const x = xToPx(n, i);
+        ctx.fillText(String(n), x - 4, h - p.bottom + 16);
+      });
+      ctx.fillText("n", w - p.right + 2, h - p.bottom + 2);
+      ctx.fillText("operations", p.left - 52, p.top - 4);
+    }
+
+    function animateSample(sample) {
+      const box = document.getElementById("perm-view");
+      const meta = document.getElementById("sample-meta");
+      if (!sample || !sample.first_permutations || sample.first_permutations.length === 0) {
+        box.textContent = "No sample";
+        return;
+      }
+
+      meta.textContent = `n = ${sample.n} | showing the first ${sample.first_permutations.length} permutations`;
+      const arr = sample.first_permutations;
+      let i = 0;
+
+      const show = () => {
+        box.textContent = arr[i].join(" ");
+        i = (i + 1) % arr.length;
+      };
+      show();
+      setInterval(show, 900);
+    }
+
+    async function main() {
+      let data = null;
+
+      if (window.__ALGO_T_RESULTS__) {
+        data = window.__ALGO_T_RESULTS__;
+      } else {
+        const res = await fetch("results.json");
+        if (!res.ok) throw new Error("Could not load results.json");
+        data = await res.json();
+      }
+
+      buildTable(data.rows);
+      drawChart(data.rows);
+      animateSample(data.sample);
+    }
+
+    main().catch(err => {
+      const container = document.querySelector(".wrap");
+      const div = document.createElement("section");
+      div.className = "card";
+      div.innerHTML = `<h2>Error</h2><p>${err.message}</p><p class="small">Run: py run_experiment.py</p><p class="small">If you opened this page locally, confirm that results.js exists in the same folder.</p>`;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

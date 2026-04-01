@@ -1,0 +1,366 @@
+{
+  "algorithm": "T (Plain Changes Transitions)",
+  "range": {
+    "start": 3,
+    "end": 10
+  },
+  "rows": [
+    {
+      "n": 3,
+      "permutations": 6,
+      "transitions": 5,
+      "offline": {
+        "comparisons": 122,
+        "local_assignments": 161,
+        "vector_assignments": 23,
+        "time_seconds": 3.890017978847027e-05
+      },
+      "online": {
+        "comparisons": 12,
+        "local_assignments": 23,
+        "vector_assignments": 13,
+        "time_seconds": 9.19983722269535e-06
+      },
+      "total": {
+        "comparisons": 134,
+        "local_assignments": 184,
+        "vector_assignments": 36,
+        "time_seconds": 4.810001701116562e-05
+      }
+    },
+    {
+      "n": 4,
+      "permutations": 24,
+      "transitions": 23,
+      "offline": {
+        "comparisons": 727,
+        "local_assignments": 894,
+        "vector_assignments": 84,
+        "time_seconds": 0.00017279991880059242
+      },
+      "online": {
+        "comparisons": 48,
+        "local_assignments": 95,
+        "vector_assignments": 50,
+        "time_seconds": 1.9300030544400215e-05
+      },
+      "total": {
+        "comparisons": 775,
+        "local_assignments": 989,
+        "vector_assignments": 134,
+        "time_seconds": 0.00019209994934499264
+      }
+    },
+    {
+      "n": 5,
+      "permutations": 120,
+      "transitions": 119,
+      "offline": {
+        "comparisons": 4644,
+        "local_assignments": 5479,
+        "vector_assignments": 397,
+        "time_seconds": 0.0017621000297367573
+      },
+      "online": {
+        "comparisons": 240,
+        "local_assignments": 479,
+        "vector_assignments": 843,
+        "time_seconds": 0.00044450000859797
+      },
+      "total": {
+        "comparisons": 4884,
+        "local_assignments": 5958,
+        "vector_assignments": 1240,
+        "time_seconds": 0.0022066000383347273
+      }
+    },
+    {
+      "n": 6,
+      "permutations": 720,
+      "transitions": 719,
+      "offline": {
+        "comparisons": 33437,
+        "local_assignments": 38362,
+        "vector_assignments": 2318,
+        "time_seconds": 0.00811599986627698
+      },
+      "online": {
+        "comparisons": 1440,
+        "local_assignments": 2879,
+        "vector_assignments": 1444,
+        "time_seconds": 0.0004992000758647919
+      },
+      "total": {
+        "comparisons": 34877,
+        "local_assignments": 41241,
+        "vector_assignments": 3762,
+        "time_seconds": 0.008615199942141771
+      }
+    },
+    {
+      "n": 7,
+      "permutations": 5040,
+      "transitions": 5039,
+      "offline": {
+        "comparisons": 272110,
+        "local_assignments": 305497,
+        "vector_assignments": 15999,
+        "time_seconds": 0.06917769997380674
+      },
+      "online": {
+        "comparisons": 10080,
+        "local_assignments": 20159,
+        "vector_assignments": 10085,
+        "time_seconds": 0.003490900155156851
+      },
+      "total": {
+        "comparisons": 282190,
+        "local_assignments": 325656,
+        "vector_assignments": 26084,
+        "time_seconds": 0.07266860012896359
+      }
+    },
+    {
+      "n": 8,
+      "permutations": 40320,
+      "transitions": 40319,
+      "offline": {
+        "comparisons": 2479623,
+        "local_assignments": 2737496,
+        "vector_assignments": 126880,
+        "time_seconds": 0.5154881000053138
+      },
+      "online": {
+        "comparisons": 80640,
+        "local_assignments": 161279,
+        "vector_assignments": 80646,
+        "time_seconds": 0.03458480001427233
+      },
+      "total": {
+        "comparisons": 2560263,
+        "local_assignments": 2898775,
+        "vector_assignments": 207526,
+        "time_seconds": 0.5500729000195861
+      }
+    },
+    {
+      "n": 9,
+      "permutations": 362880,
+      "transitions": 362879,
+      "offline": {
+        "comparisons": 25038656,
+        "local_assignments": 27257437,
+        "vector_assignments": 1134881,
+        "time_seconds": 4.908521500183269
+      },
+      "online": {
+        "comparisons": 725760,
+        "local_assignments": 1451519,
+        "vector_assignments": 725767,
+        "time_seconds": 0.27667479985393584
+      },
+      "total": {
+        "comparisons": 25764416,
+        "local_assignments": 28708956,
+        "vector_assignments": 1860648,
+        "time_seconds": 5.185196300037205
+      }
+    },
+    {
+      "n": 10,
+      "permutations": 3628800,
+      "transitions": 3628799,
+      "offline": {
+        "comparisons": 277603129,
+        "local_assignments": 298759146,
+        "vector_assignments": 11295522,
+        "time_seconds": 55.30334350001067
+      },
+      "online": {
+        "comparisons": 7257600,
+        "local_assignments": 14515199,
+        "vector_assignments": 7257608,
+        "time_seconds": 2.929261599900201
+      },
+      "total": {
+        "comparisons": 284860729,
+        "local_assignments": 313274345,
+        "vector_assignments": 18553130,
+        "time_seconds": 58.23260509991087
+      }
+    }
+  ],
+  "sample": {
+    "n": 5,
+    "first_permutations": [
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        5,
+        4
+      ],
+      [
+        1,
+        2,
+        5,
+        3,
+        4
+      ],
+      [
+        1,
+        5,
+        2,
+        3,
+        4
+      ],
+      [
+        5,
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        5,
+        1,
+        2,
+        4,
+        3
+      ],
+      [
+        1,
+        5,
+        2,
+        4,
+        3
+      ],
+      [
+        1,
+        2,
+        5,
+        4,
+        3
+      ],
+      [
+        1,
+        2,
+        4,
+        5,
+        3
+      ],
+      [
+        1,
+        2,
+        4,
+        3,
+        5
+      ],
+      [
+        1,
+        4,
+        2,
+        3,
+        5
+      ],
+      [
+        1,
+        4,
+        2,
+        5,
+        3
+      ],
+      [
+        1,
+        4,
+        5,
+        2,
+        3
+      ],
+      [
+        1,
+        5,
+        4,
+        2,
+        3
+      ],
+      [
+        5,
+        1,
+        4,
+        2,
+        3
+      ],
+      [
+        5,
+        4,
+        1,
+        2,
+        3
+      ],
+      [
+        4,
+        5,
+        1,
+        2,
+        3
+      ],
+      [
+        4,
+        1,
+        5,
+        2,
+        3
+      ],
+      [
+        4,
+        1,
+        2,
+        5,
+        3
+      ],
+      [
+        4,
+        1,
+        2,
+        3,
+        5
+      ],
+      [
+        4,
+        1,
+        3,
+        2,
+        5
+      ],
+      [
+        4,
+        1,
+        3,
+        5,
+        2
+      ],
+      [
+        4,
+        1,
+        5,
+        3,
+        2
+      ],
+      [
+        4,
+        5,
+        1,
+        3,
+        2
+      ]
+    ]
+  }
+}
