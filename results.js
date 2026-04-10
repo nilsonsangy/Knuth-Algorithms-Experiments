@@ -1,5 +1,7 @@
 window.__ALGO_T_RESULTS__ = {
-  "algorithm": "T (Plain Changes Transitions)",
+  "algorithm": "T (Plain Changes)",
+  "p_reference_source": "User-provided table image (P and Improved P)",
+  "p_reference_variant": "P and Improved P",
   "range": {
     "start": 3,
     "end": 10
@@ -7,187 +9,331 @@ window.__ALGO_T_RESULTS__ = {
   "rows": [
     {
       "n": 3,
-      "permutations": 6,
-      "transitions": 5,
-      "offline": {
-        "comparisons": 122,
-        "local_assignments": 161,
-        "vector_assignments": 23,
-        "time_seconds": 3.890017978847027e-05
+      "t": {
+        "offline": {
+          "comparisons": 122,
+          "local_assignments": 161,
+          "vector_assignments": 23,
+          "time_seconds": 6.340001709759235e-05
+        },
+        "online": {
+          "comparisons": 12,
+          "local_assignments": 23,
+          "vector_assignments": 13,
+          "time_seconds": 1.610000617802143e-05
+        },
+        "total": {
+          "comparisons": 134,
+          "local_assignments": 184,
+          "vector_assignments": 36,
+          "time_seconds": 7.950002327561378e-05
+        }
       },
-      "online": {
-        "comparisons": 12,
-        "local_assignments": 23,
-        "vector_assignments": 13,
-        "time_seconds": 9.19983722269535e-06
+      "p": {
+        "total": {
+          "comparisons": 12,
+          "local_assignments": 58,
+          "vector_assignments": 24,
+          "time_seconds": 2.3e-05
+        }
       },
-      "total": {
-        "comparisons": 134,
-        "local_assignments": 184,
-        "vector_assignments": 36,
-        "time_seconds": 4.810001701116562e-05
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 69,
+          "local_assignments": 44,
+          "vector_assignments": 23,
+          "time_seconds": 1.7e-05
+        }
+      },
+      "break_even_runs_time_p": 10,
+      "break_even_runs_time_p_improved": 71
     },
     {
       "n": 4,
-      "permutations": 24,
-      "transitions": 23,
-      "offline": {
-        "comparisons": 727,
-        "local_assignments": 894,
-        "vector_assignments": 84,
-        "time_seconds": 0.00017279991880059242
+      "t": {
+        "offline": {
+          "comparisons": 727,
+          "local_assignments": 894,
+          "vector_assignments": 84,
+          "time_seconds": 0.0002416000934317708
+        },
+        "online": {
+          "comparisons": 48,
+          "local_assignments": 95,
+          "vector_assignments": 50,
+          "time_seconds": 3.0499999411404133e-05
+        },
+        "total": {
+          "comparisons": 775,
+          "local_assignments": 989,
+          "vector_assignments": 134,
+          "time_seconds": 0.00027210009284317493
+        }
       },
-      "online": {
-        "comparisons": 48,
-        "local_assignments": 95,
-        "vector_assignments": 50,
-        "time_seconds": 1.9300030544400215e-05
+      "p": {
+        "total": {
+          "comparisons": 27,
+          "local_assignments": 192,
+          "vector_assignments": 97,
+          "time_seconds": 1e-05
+        }
       },
-      "total": {
-        "comparisons": 775,
-        "local_assignments": 989,
-        "vector_assignments": 134,
-        "time_seconds": 0.00019209994934499264
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 380,
+          "local_assignments": 214,
+          "vector_assignments": 96,
+          "time_seconds": 3.7e-05
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": 38
     },
     {
       "n": 5,
-      "permutations": 120,
-      "transitions": 119,
-      "offline": {
-        "comparisons": 4644,
-        "local_assignments": 5479,
-        "vector_assignments": 397,
-        "time_seconds": 0.0017621000297367573
+      "t": {
+        "offline": {
+          "comparisons": 4644,
+          "local_assignments": 5479,
+          "vector_assignments": 397,
+          "time_seconds": 0.0014682000037282705
+        },
+        "online": {
+          "comparisons": 240,
+          "local_assignments": 479,
+          "vector_assignments": 843,
+          "time_seconds": 0.00029799994081258774
+        },
+        "total": {
+          "comparisons": 4884,
+          "local_assignments": 5958,
+          "vector_assignments": 1240,
+          "time_seconds": 0.0017661999445408583
+        }
       },
-      "online": {
-        "comparisons": 240,
-        "local_assignments": 479,
-        "vector_assignments": 843,
-        "time_seconds": 0.00044450000859797
+      "p": {
+        "total": {
+          "comparisons": 87,
+          "local_assignments": 866,
+          "vector_assignments": 482,
+          "time_seconds": 4.6e-05
+        }
       },
-      "total": {
-        "comparisons": 4884,
-        "local_assignments": 5958,
-        "vector_assignments": 1240,
-        "time_seconds": 0.0022066000383347273
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 2395,
+          "local_assignments": 1230,
+          "vector_assignments": 481,
+          "time_seconds": 0.000211
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": null
     },
     {
       "n": 6,
-      "permutations": 720,
-      "transitions": 719,
-      "offline": {
-        "comparisons": 33437,
-        "local_assignments": 38362,
-        "vector_assignments": 2318,
-        "time_seconds": 0.00811599986627698
+      "t": {
+        "offline": {
+          "comparisons": 33437,
+          "local_assignments": 38362,
+          "vector_assignments": 2318,
+          "time_seconds": 0.010272999992594123
+        },
+        "online": {
+          "comparisons": 1440,
+          "local_assignments": 2879,
+          "vector_assignments": 1444,
+          "time_seconds": 0.0008052000775933266
+        },
+        "total": {
+          "comparisons": 34877,
+          "local_assignments": 41241,
+          "vector_assignments": 3762,
+          "time_seconds": 0.01107820007018745
+        }
       },
-      "online": {
-        "comparisons": 1440,
-        "local_assignments": 2879,
-        "vector_assignments": 1444,
-        "time_seconds": 0.0004992000758647919
+      "p": {
+        "total": {
+          "comparisons": 387,
+          "local_assignments": 4948,
+          "vector_assignments": 2883,
+          "time_seconds": 0.000245
+        }
       },
-      "total": {
-        "comparisons": 34877,
-        "local_assignments": 41241,
-        "vector_assignments": 3762,
-        "time_seconds": 0.008615199942141771
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 17274,
+          "local_assignments": 8320,
+          "vector_assignments": 2882,
+          "time_seconds": 0.001083
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": 37
     },
     {
       "n": 7,
-      "permutations": 5040,
-      "transitions": 5039,
-      "offline": {
-        "comparisons": 272110,
-        "local_assignments": 305497,
-        "vector_assignments": 15999,
-        "time_seconds": 0.06917769997380674
+      "t": {
+        "offline": {
+          "comparisons": 272110,
+          "local_assignments": 305497,
+          "vector_assignments": 15999,
+          "time_seconds": 0.08630530000664294
+        },
+        "online": {
+          "comparisons": 10080,
+          "local_assignments": 20159,
+          "vector_assignments": 10085,
+          "time_seconds": 0.005604599951766431
+        },
+        "total": {
+          "comparisons": 282190,
+          "local_assignments": 325656,
+          "vector_assignments": 26084,
+          "time_seconds": 0.09190989995840937
+        }
       },
-      "online": {
-        "comparisons": 10080,
-        "local_assignments": 20159,
-        "vector_assignments": 10085,
-        "time_seconds": 0.003490900155156851
+      "p": {
+        "total": {
+          "comparisons": 2187,
+          "local_assignments": 33750,
+          "vector_assignments": 20164,
+          "time_seconds": 0.003576
+        }
       },
-      "total": {
-        "comparisons": 282190,
-        "local_assignments": 325656,
-        "vector_assignments": 26084,
-        "time_seconds": 0.07266860012896359
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 141113,
+          "local_assignments": 64502,
+          "vector_assignments": 20163,
+          "time_seconds": 0.0102
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": 19
     },
     {
       "n": 8,
-      "permutations": 40320,
-      "transitions": 40319,
-      "offline": {
-        "comparisons": 2479623,
-        "local_assignments": 2737496,
-        "vector_assignments": 126880,
-        "time_seconds": 0.5154881000053138
+      "t": {
+        "offline": {
+          "comparisons": 2479623,
+          "local_assignments": 2737496,
+          "vector_assignments": 126880,
+          "time_seconds": 0.8460596000077203
+        },
+        "online": {
+          "comparisons": 80640,
+          "local_assignments": 161279,
+          "vector_assignments": 80646,
+          "time_seconds": 0.04113380005583167
+        },
+        "total": {
+          "comparisons": 2560263,
+          "local_assignments": 2898775,
+          "vector_assignments": 207526,
+          "time_seconds": 0.887193400063552
+        }
       },
-      "online": {
-        "comparisons": 80640,
-        "local_assignments": 161279,
-        "vector_assignments": 80646,
-        "time_seconds": 0.03458480001427233
+      "p": {
+        "total": {
+          "comparisons": 14787,
+          "local_assignments": 265592,
+          "vector_assignments": 161285,
+          "time_seconds": 0.015439
+        }
       },
-      "total": {
-        "comparisons": 2560263,
-        "local_assignments": 2898775,
-        "vector_assignments": 207526,
-        "time_seconds": 0.5500729000195861
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 1290232,
+          "local_assignments": 566188,
+          "vector_assignments": 161284,
+          "time_seconds": 0.076943
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": 24
     },
     {
       "n": 9,
-      "permutations": 362880,
-      "transitions": 362879,
-      "offline": {
-        "comparisons": 25038656,
-        "local_assignments": 27257437,
-        "vector_assignments": 1134881,
-        "time_seconds": 4.908521500183269
+      "t": {
+        "offline": {
+          "comparisons": 25038656,
+          "local_assignments": 27257437,
+          "vector_assignments": 1134881,
+          "time_seconds": 6.618856200017035
+        },
+        "online": {
+          "comparisons": 725760,
+          "local_assignments": 1451519,
+          "vector_assignments": 725767,
+          "time_seconds": 0.2874663000693545
+        },
+        "total": {
+          "comparisons": 25764416,
+          "local_assignments": 28708956,
+          "vector_assignments": 1860648,
+          "time_seconds": 6.9063225000863895
+        }
       },
-      "online": {
-        "comparisons": 725760,
-        "local_assignments": 1451519,
-        "vector_assignments": 725767,
-        "time_seconds": 0.27667479985393584
+      "p": {
+        "total": {
+          "comparisons": 115587,
+          "local_assignments": 2362234,
+          "vector_assignments": 1451526,
+          "time_seconds": 0.159122
+        }
       },
-      "total": {
-        "comparisons": 25764416,
-        "local_assignments": 28708956,
-        "vector_assignments": 1860648,
-        "time_seconds": 5.185196300037205
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 13063671,
+          "local_assignments": 5530936,
+          "vector_assignments": 1451525,
+          "time_seconds": 0.75922
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": 15
     },
     {
       "n": 10,
-      "permutations": 3628800,
-      "transitions": 3628799,
-      "offline": {
-        "comparisons": 277603129,
-        "local_assignments": 298759146,
-        "vector_assignments": 11295522,
-        "time_seconds": 55.30334350001067
+      "t": {
+        "offline": {
+          "comparisons": 277603129,
+          "local_assignments": 298759146,
+          "vector_assignments": 11295522,
+          "time_seconds": 69.85107809992041
+        },
+        "online": {
+          "comparisons": 7257600,
+          "local_assignments": 14515199,
+          "vector_assignments": 7257608,
+          "time_seconds": 3.9102764000417665
+        },
+        "total": {
+          "comparisons": 284860729,
+          "local_assignments": 313274345,
+          "vector_assignments": 18553130,
+          "time_seconds": 73.76135449996218
+        }
       },
-      "online": {
-        "comparisons": 7257600,
-        "local_assignments": 14515199,
-        "vector_assignments": 7257608,
-        "time_seconds": 2.929261599900201
+      "p": {
+        "total": {
+          "comparisons": 1022787,
+          "local_assignments": 23409276,
+          "vector_assignments": 14515207,
+          "time_seconds": 2.37966
+        }
       },
-      "total": {
-        "comparisons": 284860729,
-        "local_assignments": 313274345,
-        "vector_assignments": 18553130,
-        "time_seconds": 58.23260509991087
-      }
+      "p_improved": {
+        "total": {
+          "comparisons": 145151990,
+          "local_assignments": 59667532,
+          "vector_assignments": 14515206,
+          "time_seconds": 8.5759
+        }
+      },
+      "break_even_runs_time_p": null,
+      "break_even_runs_time_p_improved": 15
     }
   ],
   "sample": {
