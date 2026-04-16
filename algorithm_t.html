@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T Algorithm - Visual Experiment</title>
+  <style>
+    :root {
+      --bg-1: #f4efe6;
+      --bg-2: #d7e5ea;
+      --ink: #1b1c1f;
+      --muted: #4c5056;
+      --accent: #ff6b35;
+      --accent-2: #0f7b6c;
+      --card: #fffaf3;
+      --line-a: #204051;
+      --line-b: #ff6b35;
+      --line-c: #0f7b6c;
+      --shadow: rgba(18, 22, 28, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255, 107, 53, 0.2), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(15, 123, 108, 0.18), transparent 26%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+      animation: rise 650ms ease-out;
+    }
+
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px var(--shadow);
+      padding: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 2vw + 1rem, 2.3rem);
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e5dfd6;
+      padding: 8px 6px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: #24303a;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .group-head {
+      text-align: center;
+      background: #f7f2ea;
+    }
+
+    .chart {
+      width: 100%;
+      height: 280px;
+      display: block;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #ece4d9;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #2d3339;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .sample-box {
+      display: grid;
+      gap: 8px;
+    }
+
+    .perm {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 1.4rem;
+      color: #24303a;
+      background: #fff;
+      border: 1px solid #ebe2d6;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .small {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
+    }
+
+    .subcard {
+      background: #fff;
+      border: 1px solid #ebe2d6;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .subcard h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .chart-legend {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chart-desc {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .section-row {
+      background: #f7f2ea;
+      font-weight: 700;
+      color: #2b3740;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>T Algorithm (Plain Changes)</h1>
+      <p>
+        Visualization of the Offline and Online phases for n=3..10. The Offline phase precomputes
+        an adjacent-swap plan; the Online phase applies it to generate permutations.
+      </p>
+    </section>
+
+    <section class="grid">
+      <article class="card sample-box">
+        <h2>Didactic Example (Online)</h2>
+        <div id="sample-meta" class="small"></div>
+        <div id="perm-view" class="perm">-</div>
+        <div class="small">At each step, only one adjacent pair changes.</div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>How Algorithm T Works</h2>
+      <p class="small">
+        Algorithm T is split into two simple functions. The offline phase builds a swap plan once.
+        The online phase reuses that plan to generate permutations quickly.
+      </p>
+
+      <h3>Simple Pseudocode</h3>
+      <pre style="overflow:auto; background:#fff; border:1px solid #ebe2d6; border-radius:12px; padding:14px; line-height:1.45; white-space:pre-wrap; margin:0 0 12px;">Algorithm T(n)
+  offline:
+    create the initial permutation [1..n]
+    build the list of adjacent swap positions
+    return the swap plan
+
+  online(swap_plan):
+    create the initial permutation [1..n]
+    output the first permutation
+    for each swap position in swap_plan:
+      swap the adjacent elements
+      output the new permutation</pre>
+
+      <div class="grid">
+        <article class="subcard">
+          <h3>Offline Function</h3>
+          <p class="chart-desc">
+            This function prepares the swap plan. It finds which adjacent positions must be swapped
+            to move from one permutation to the next. The result is a compact roadmap.
+          </p>
+        </article>
+        <article class="subcard">
+          <h3>Online Function</h3>
+          <p class="chart-desc">
+            This function receives the precomputed plan and applies each swap in order. It does not
+            recompute the logic of the next move; it only follows the plan.
+          </p>
+        </article>
+        <article class="subcard">
+          <h3>Step by Step</h3>
+          <p class="chart-desc">
+            1. Start with the identity permutation.<br>
+            2. Build the swap plan offline.<br>
+            3. Reuse that plan online to generate every new permutation.<br>
+            4. Measure offline and online costs separately.<br>
+            5. Compare T with P and Improved P.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Comparison Graphs</h2>
+      <p class="small">
+        Each chart shows one metric only, so the differences between T, P, and Improved P stay readable.
+      </p>
+      <div class="chart-grid">
+        <article class="subcard">
+          <h3>Comparisons</h3>
+          <p class="chart-desc">Number of comparisons performed by T, P, and Improved P for each n.</p>
+          <canvas id="comparisons-chart" class="chart" width="700" height="280"></canvas>
+          <div class="chart-legend">
+            <span class="legend-item"><span class="dot" style="background:var(--line-a)"></span>T</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-b)"></span>P</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-c)"></span>Improved P</span>
+          </div>
+        </article>
+        <article class="subcard">
+          <h3>Local Variable Assignments</h3>
+          <p class="chart-desc">Assignments to loop counters, indexes, and other local variables.</p>
+          <canvas id="locals-chart" class="chart" width="700" height="280"></canvas>
+          <div class="chart-legend">
+            <span class="legend-item"><span class="dot" style="background:var(--line-a)"></span>T</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-b)"></span>P</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-c)"></span>Improved P</span>
+          </div>
+        </article>
+        <article class="subcard">
+          <h3>Vector Assignments</h3>
+          <p class="chart-desc">Actual data movement in the permutation vector and the swap plan.</p>
+          <canvas id="vector-chart" class="chart" width="700" height="280"></canvas>
+          <div class="chart-legend">
+            <span class="legend-item"><span class="dot" style="background:var(--line-a)"></span>T</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-b)"></span>P</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-c)"></span>Improved P</span>
+          </div>
+        </article>
+        <article class="subcard">
+          <h3>Execution Time</h3>
+          <p class="chart-desc">Total execution time in seconds. Uses a logarithmic Y axis because values grow very quickly.</p>
+          <canvas id="time-chart" class="chart" width="700" height="280"></canvas>
+          <div class="chart-legend">
+            <span class="legend-item"><span class="dot" style="background:var(--line-a)"></span>T</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-b)"></span>P</span>
+            <span class="legend-item"><span class="dot" style="background:var(--line-c)"></span>Improved P</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Raw</h2>
+      <p class="small">
+        Split metrics for Algorithm T: Offline (precompute swap plan) and Online (generate permutations).
+      </p>
+      <div style="overflow:auto;">
+        <table id="raw-table"></table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Final Results</h2>
+      <p class="small">Consolidated comparison table for T, P and Improved P across all measured metrics.</p>
+      <div style="overflow:auto;">
+        <table id="final-results-table"></table>
+      </div>
+    </section>
+  </main>
+
+  <script src="results.js"></script>
+  <script>
+    function fmt(v) {
+      return Number(v).toLocaleString("en-US");
+    }
+
+    function sec(v) {
+      return Number(v).toFixed(6);
+    }
+
+    function normalizeData(data) {
+      const rows = Array.isArray(data?.rows) ? data.rows : [];
+      const normalizedRows = rows.map(r => {
+        const tBlock = r.t || {
+          offline: r.offline || { comparisons: 0, local_assignments: 0, vector_assignments: 0, time_seconds: 0 },
+          online: r.online || { comparisons: 0, local_assignments: 0, vector_assignments: 0, time_seconds: 0 },
+          total: r.total || { comparisons: 0, local_assignments: 0, vector_assignments: 0, time_seconds: 0 }
+        };
+
+        const pBlock = r.p || {
+          total: { comparisons: 0, local_assignments: 0, vector_assignments: 0, time_seconds: 0 }
+        };
+
+        const pImprovedBlock = r.p_improved || pBlock;
+
+        return {
+          n: r.n,
+          t: tBlock,
+          p: pBlock,
+          p_improved: pImprovedBlock,
+          break_even_runs_time_p: r.break_even_runs_time_p ?? r.break_even_runs_time ?? null,
+          break_even_runs_time_p_improved: r.break_even_runs_time_p_improved ?? null
+        };
+      });
+
+      return {
+        ...data,
+        rows: normalizedRows
+      };
+    }
+
+    function buildRawTable(rows) {
+      const table = document.getElementById("raw-table");
+
+      let html = "<thead>";
+      html += "<tr>" + [
+        '<th rowspan="2">n</th>',
+        '<th colspan="4" class="group-head">Algorithm T Offline (Precompute)</th>',
+        '<th colspan="4" class="group-head">Algorithm T Online (Generation)</th>'
+      ].join("") + "</tr>";
+
+      html += "<tr>" + [
+        "<th>C</th>",
+        "<th>A (local vars)</th>",
+        "<th>A (to/from V)</th>",
+        "<th>T (s)</th>",
+        "<th>C</th>",
+        "<th>A (local vars)</th>",
+        "<th>A (to/from V)</th>",
+        "<th>T (s)</th>"
+      ].join("") + "</tr></thead><tbody>";
+
+      for (const r of rows) {
+        html += "<tr>" + [
+          r.n,
+          fmt(r.t.offline.comparisons),
+          fmt(r.t.offline.local_assignments),
+          fmt(r.t.offline.vector_assignments),
+          sec(r.t.offline.time_seconds),
+          fmt(r.t.online.comparisons),
+          fmt(r.t.online.local_assignments),
+          fmt(r.t.online.vector_assignments),
+          sec(r.t.online.time_seconds)
+        ].map(v => `<td>${v}</td>`).join("") + "</tr>";
+      }
+
+      html += "</tbody>";
+      table.innerHTML = html;
+    }
+
+    function metricFmt(metric, value) {
+      if (metric === "time") return sec(value);
+      return fmt(value);
+    }
+
+    function buildFinalResultsTable(rows) {
+      const table = document.getElementById("final-results-table");
+      const headers = [
+        "n",
+        "P",
+        "Improved P",
+        "T (Offline+Online)",
+        "T (Online)"
+      ];
+
+      const sections = [
+        {
+          title: "Comparisons",
+          key: "comparisons",
+          pick: r => ({
+            p: r.p.total.comparisons,
+            pImproved: r.p_improved.total.comparisons,
+            tTotal: r.t.total.comparisons,
+            tOnline: r.t.online.comparisons
+          })
+        },
+        {
+          title: "Local Variable Assignments",
+          key: "local",
+          pick: r => ({
+            p: r.p.total.local_assignments,
+            pImproved: r.p_improved.total.local_assignments,
+            tTotal: r.t.total.local_assignments,
+            tOnline: r.t.online.local_assignments
+          })
+        },
+        {
+          title: "Vector Assignments",
+          key: "vector",
+          pick: r => ({
+            p: r.p.total.vector_assignments,
+            pImproved: r.p_improved.total.vector_assignments,
+            tTotal: r.t.total.vector_assignments,
+            tOnline: r.t.online.vector_assignments
+          })
+        },
+        {
+          title: "Time (seconds)",
+          key: "time",
+          pick: r => ({
+            p: r.p.total.time_seconds,
+            pImproved: r.p_improved.total.time_seconds,
+            tTotal: r.t.total.time_seconds,
+            tOnline: r.t.online.time_seconds
+          })
+        }
+      ];
+
+      let html = "<thead><tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr></thead><tbody>";
+
+      sections.forEach(section => {
+        html += `<tr class="section-row"><td colspan="5">${section.title}</td></tr>`;
+        rows.forEach(r => {
+          const m = section.pick(r);
+          html += "<tr>" + [
+            r.n,
+            metricFmt(section.key, m.p),
+            metricFmt(section.key, m.pImproved),
+            metricFmt(section.key, m.tTotal),
+            metricFmt(section.key, m.tOnline)
+          ].map(v => `<td>${v}</td>`).join("") + "</tr>";
+        });
+      });
+
+      html += "</tbody>";
+      table.innerHTML = html;
+    }
+
+    function axisFmt(v) {
+      return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(v);
+    }
+
+    function scalarFmt(v) {
+      if (v >= 1000) return axisFmt(v);
+      if (v >= 1) return v.toFixed(2);
+      return v.toPrecision(2);
+    }
+
+    function getColorVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function drawAxesAndXTicks(ctx, w, h, pad, xs) {
+      ctx.strokeStyle = "#d9d1c4";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top);
+      ctx.lineTo(pad.left, h - pad.bottom);
+      ctx.lineTo(w - pad.right, h - pad.bottom);
+      ctx.stroke();
+
+      const xToPx = (i) => {
+        const t = xs.length === 1 ? 0 : i / (xs.length - 1);
+        return pad.left + t * (w - pad.left - pad.right);
+      };
+
+      ctx.fillStyle = "#45515d";
+      ctx.font = "12px Trebuchet MS";
+      xs.forEach((n, i) => {
+        const x = xToPx(i);
+        ctx.fillText(String(n), x - 4, h - pad.bottom + 16);
+      });
+      ctx.fillText("n", w - pad.right + 2, h - pad.bottom + 2);
+
+      return xToPx;
+    }
+
+    function drawMetricChart(canvasId, rows, seriesList, labels, yLabel, options = {}) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      const pad = { left: 72, right: 16, top: 18, bottom: 40 };
+      const xs = rows.map(r => r.n);
+      const values = seriesList.map(selector => rows.map(selector));
+      const useLog = Boolean(options.logY);
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, w, h);
+
+      const xToPx = drawAxesAndXTicks(ctx, w, h, pad, xs);
+
+      let yToPx;
+      let yTicks = [];
+
+      if (useLog) {
+        const positiveValues = values.flat().filter(v => v > 0);
+        const minVal = Math.min(...positiveValues);
+        const maxVal = Math.max(...positiveValues);
+        const minPow = Math.floor(Math.log10(minVal));
+        const maxPow = Math.ceil(Math.log10(maxVal));
+        const powSpan = Math.max(1, maxPow - minPow);
+
+        yToPx = v => {
+          const safeValue = Math.max(v, minVal);
+          const p = (Math.log10(safeValue) - minPow) / powSpan;
+          return h - pad.bottom - p * (h - pad.top - pad.bottom);
+        };
+
+        for (let pow = minPow; pow <= maxPow; pow += 1) {
+          const val = Math.pow(10, pow);
+          yTicks.push(val);
+        }
+      } else {
+        const maxY = Math.max(...values.flat()) * 1.08;
+        yToPx = v => h - pad.bottom - (v / maxY) * (h - pad.top - pad.bottom);
+        const tickCount = 5;
+        for (let i = 0; i <= tickCount; i += 1) {
+          yTicks.push((maxY / tickCount) * i);
+        }
+      }
+
+      yTicks.forEach(val => {
+        const y = yToPx(val);
+        ctx.strokeStyle = "#efe6db";
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(w - pad.right, y);
+        ctx.stroke();
+        ctx.fillStyle = "#63707d";
+        ctx.font = "11px Trebuchet MS";
+        ctx.fillText(useLog ? sec(val) : scalarFmt(val), 4, y + 4);
+      });
+
+      values.forEach((data, index) => {
+        ctx.strokeStyle = getColorVar(["--line-a", "--line-b", "--line-c"][index]);
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        data.forEach((v, i) => {
+          const x = xToPx(i);
+          const y = yToPx(v);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      });
+
+      ctx.fillStyle = "#45515d";
+      ctx.fillText(yLabel, pad.left - 64, pad.top - 4);
+    }
+
+    function animateSample(sample) {
+      const box = document.getElementById("perm-view");
+      const meta = document.getElementById("sample-meta");
+      if (!sample || !sample.first_permutations || sample.first_permutations.length === 0) {
+        box.textContent = "No sample";
+        return;
+      }
+
+      meta.textContent = `n = ${sample.n} | showing the first ${sample.first_permutations.length} permutations`;
+      const arr = sample.first_permutations;
+      let i = 0;
+
+      const show = () => {
+        box.textContent = arr[i].join(" ");
+        i = (i + 1) % arr.length;
+      };
+      show();
+      setInterval(show, 900);
+    }
+
+    async function main() {
+      let data = null;
+
+      if (window.__ALGO_T_RESULTS__) {
+        data = window.__ALGO_T_RESULTS__;
+      } else {
+        const res = await fetch("results.json");
+        if (!res.ok) throw new Error("Could not load results.json");
+        data = await res.json();
+      }
+
+      if (!data?.rows?.length || !data.rows[0]?.p || !data.rows[0]?.p_improved) {
+        const res = await fetch("results.json");
+        if (res.ok) {
+          data = await res.json();
+        }
+      }
+
+      data = normalizeData(data);
+
+      buildRawTable(data.rows);
+      buildFinalResultsTable(data.rows);
+      drawMetricChart(
+        "comparisons-chart",
+        data.rows,
+        [r => r.t.total.comparisons, r => r.p.total.comparisons, r => r.p_improved.total.comparisons],
+        ["T", "P", "Improved P"],
+        "comparisons"
+      );
+      drawMetricChart(
+        "locals-chart",
+        data.rows,
+        [r => r.t.total.local_assignments, r => r.p.total.local_assignments, r => r.p_improved.total.local_assignments],
+        ["T", "P", "Improved P"],
+        "local assignments"
+      );
+      drawMetricChart(
+        "vector-chart",
+        data.rows,
+        [r => r.t.total.vector_assignments, r => r.p.total.vector_assignments, r => r.p_improved.total.vector_assignments],
+        ["T", "P", "Improved P"],
+        "vector assignments"
+      );
+      drawMetricChart(
+        "time-chart",
+        data.rows,
+        [r => r.t.total.time_seconds, r => r.p.total.time_seconds, r => r.p_improved.total.time_seconds],
+        ["T", "P", "Improved P"],
+        "seconds (log10)",
+        { logY: true }
+      );
+      animateSample(data.sample);
+    }
+
+    main().catch(err => {
+      const container = document.querySelector(".wrap");
+      const div = document.createElement("section");
+      div.className = "card";
+      div.innerHTML = `<h2>Error</h2><p>${err.message}</p><p class="small">Run: py run_experiment.py</p><p class="small">If you opened this page locally, confirm that results.js exists in the same folder.</p>`;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

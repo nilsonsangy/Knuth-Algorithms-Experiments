@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Propriedades de Grupo das Permutacoes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #f4f1e8;
+      --bg-1: #e6efe6;
+      --ink: #111417;
+      --muted: #47515b;
+      --card: #fffaf2;
+      --line: #e9ddcc;
+      --accent-1: #d94f2b;
+      --accent-2: #237a57;
+      --accent-3: #0d5f72;
+      --accent-4: #b5912c;
+      --shadow: rgba(16, 23, 28, 0.16);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(217, 79, 43, 0.2), transparent 30%),
+        radial-gradient(circle at 86% 14%, rgba(35, 122, 87, 0.18), transparent 24%),
+        radial-gradient(circle at 72% 88%, rgba(13, 95, 114, 0.16), transparent 26%),
+        linear-gradient(140deg, var(--bg-0), var(--bg-1));
+      padding: 22px;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+      animation: reveal 680ms ease-out;
+    }
+
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 34px var(--shadow);
+    }
+
+    .hero {
+      padding: 22px;
+      display: grid;
+      gap: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      line-height: 1.12;
+      font-size: clamp(1.6rem, 2.5vw + 0.9rem, 2.8rem);
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      padding: 16px;
+    }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 0.86rem;
+      color: #313a44;
+      display: grid;
+      gap: 6px;
+    }
+
+    input, select, button {
+      font-family: inherit;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      border: 1px solid #d8ccbc;
+      padding: 10px 12px;
+      background: #fff;
+      color: #1b2126;
+    }
+
+    input, select {
+      width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+      box-shadow: 0 4px 14px rgba(10, 16, 19, 0.08);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 9px 18px rgba(10, 16, 19, 0.14);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px;
+    }
+
+    .accent-1 { border-color: #e9b09f; background: #fff2ee; }
+    .accent-2 { border-color: #a8d6be; background: #effcf5; }
+    .accent-3 { border-color: #9ec7d2; background: #eff8fa; }
+    .accent-4 { border-color: #e8d7a6; background: #fef9e8; }
+
+    .arena-wrap {
+      display: grid;
+      gap: 10px;
+    }
+
+    .arena-title {
+      font-size: 0.87rem;
+      color: #3b4651;
+      letter-spacing: 0.01em;
+    }
+
+    .arena {
+      min-height: 86px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: linear-gradient(180deg, #fffefc, #fff8ed);
+      overflow: hidden;
+    }
+
+    .arena.n3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .block {
+      height: 58px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-family: "IBM Plex Mono", Consolas, monospace;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #12181d;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .block.v1 { background: #ffdccc; }
+    .block.v2 { background: #ffeab5; }
+    .block.v3 { background: #ccf2d8; }
+    .block.v4 { background: #cdeaf5; }
+
+    .dual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .log {
+      min-height: 190px;
+      border: 1px solid #ddcfbc;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fffefb;
+      font-family: "IBM Plex Mono", Consolas, monospace;
+      font-size: 0.86rem;
+      color: #2a3239;
+      overflow: auto;
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: 0.8rem;
+      border: 1px solid #d8cbba;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: #fff;
+      color: #36424f;
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dual {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Propriedades de Grupo em Permutacoes</h1>
+      <p>
+        Convencao de Knuth usada aqui: na permutacao [a1, a2, ..., an], o valor na posicao i vai para a posicao ai.
+        Composicao definida como aplicar alpha e depois beta.
+      </p>
+      <div class="chips">
+        <span class="chip">Conjunto P sob composicao</span>
+        <span class="chip">n = 3 ou n = 4</span>
+        <span class="chip">Animacao via Web Animations API</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card controls">
+        <h2>Configuracao</h2>
+        <div class="row">
+          <label>Tamanho n
+            <select id="n-select">
+              <option value="3">3</option>
+              <option value="4" selected>4</option>
+            </select>
+          </label>
+          <label>Velocidade (ms)
+            <select id="speed-select">
+              <option value="450">Rapida</option>
+              <option value="750" selected>Media</option>
+              <option value="1100">Lenta</option>
+            </select>
+          </label>
+        </div>
+        <label>Permutacao alpha (ex: 2,1,4,3)
+          <input id="alpha-input" value="2,1,4,3" />
+        </label>
+        <label>Permutacao beta (ex: 1,3,2,4)
+          <input id="beta-input" value="1,3,2,4" />
+        </label>
+        <div class="actions">
+          <button class="accent-1" id="btn-neutro">Elemento neutro</button>
+          <button class="accent-2" id="btn-fechamento">Fechamento</button>
+          <button class="accent-3" id="btn-inverso">Inverso</button>
+          <button class="accent-4" id="btn-nao-com">Nao comutatividade</button>
+          <button id="btn-random">Alpha/Beta aleatorios</button>
+          <button id="btn-reset">Resetar arenas</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Arenas de demonstracao</h2>
+        <div class="arena-wrap">
+          <div class="arena-title">Arena principal</div>
+          <div class="arena" id="arena-main" aria-label="Arena principal"></div>
+          <div class="arena-title">Prova de fechamento (aplicacao direta de alpha.beta)</div>
+          <div class="arena" id="arena-proof" aria-label="Arena de prova"></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Nao comutatividade lado a lado</h2>
+      <div class="dual">
+        <div>
+          <p>Esquerda: (alpha.beta)</p>
+          <div class="arena" id="arena-left" aria-label="Composicao alpha beta"></div>
+        </div>
+        <div>
+          <p>Direita: (beta.alpha)</p>
+          <div class="arena" id="arena-right" aria-label="Composicao beta alpha"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Explicacao em tempo real</h2>
+      <div id="log" class="log"></div>
+    </section>
+  </main>
+
+  <script>
+    const arenas = {
+      main: { el: document.getElementById("arena-main"), arr: [] },
+      proof: { el: document.getElementById("arena-proof"), arr: [] },
+      left: { el: document.getElementById("arena-left"), arr: [] },
+      right: { el: document.getElementById("arena-right"), arr: [] }
+    };
+
+    const nSelect = document.getElementById("n-select");
+    const speedSelect = document.getElementById("speed-select");
+    const alphaInput = document.getElementById("alpha-input");
+    const betaInput = document.getElementById("beta-input");
+    const logBox = document.getElementById("log");
+
+    let isBusy = false;
+
+    function identity(n) {
+      return Array.from({ length: n }, (_, i) => i + 1);
+    }
+
+    function randomPermutation(n) {
+      const arr = identity(n);
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function formatPerm(p) {
+      return `[${p.join(",")}]`;
+    }
+
+    function parsePermutation(text, n) {
+      const values = text
+        .trim()
+        .split(/[\s,;]+/)
+        .filter(Boolean)
+        .map(Number);
+
+      if (values.length !== n || values.some(Number.isNaN)) {
+        throw new Error(`Esperado vetor com ${n} valores inteiros.`);
+      }
+
+      const unique = new Set(values);
+      const validRange = values.every(v => v >= 1 && v <= n);
+      if (unique.size !== n || !validRange) {
+        throw new Error(`Cada permutacao deve conter 1..${n} sem repeticao.`);
+      }
+
+      return values;
+    }
+
+    function applyPermutation(arr, p) {
+      const next = new Array(arr.length);
+      for (let i = 0; i < arr.length; i += 1) {
+        next[p[i] - 1] = arr[i];
+      }
+      return next;
+    }
+
+    function compose(alpha, beta) {
+      const n = alpha.length;
+      const composed = new Array(n);
+      for (let i = 0; i < n; i += 1) {
+        composed[i] = beta[alpha[i] - 1];
+      }
+      return composed;
+    }
+
+    function inverse(p) {
+      const inv = new Array(p.length);
+      for (let i = 0; i < p.length; i += 1) {
+        inv[p[i] - 1] = i + 1;
+      }
+      return inv;
+    }
+
+    function setArenaClass(el, n) {
+      el.classList.toggle("n3", n === 3);
+    }
+
+    function renderArena(arenaState, values) {
+      arenaState.el.innerHTML = "";
+      values.forEach(value => {
+        const block = document.createElement("div");
+        block.className = `block v${value}`;
+        block.dataset.value = String(value);
+        block.textContent = String(value);
+        arenaState.el.appendChild(block);
+      });
+      arenaState.arr = values.slice();
+    }
+
+    function addLog(text) {
+      const stamp = new Date().toLocaleTimeString("pt-BR", { hour12: false });
+      logBox.textContent += `[${stamp}] ${text}\n`;
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function clearLog() {
+      logBox.textContent = "";
+    }
+
+    function getDuration() {
+      return Number(speedSelect.value);
+    }
+
+    async function animateArenaTo(arenaState, nextArr, label) {
+      const duration = getDuration();
+      const first = new Map();
+      [...arenaState.el.children].forEach(child => {
+        first.set(child.dataset.value, child.getBoundingClientRect());
+      });
+
+      nextArr.forEach(value => {
+        const node = arenaState.el.querySelector(`[data-value="${value}"]`);
+        arenaState.el.appendChild(node);
+      });
+
+      const animations = [];
+      [...arenaState.el.children].forEach(child => {
+        const f = first.get(child.dataset.value);
+        const l = child.getBoundingClientRect();
+        const dx = f.left - l.left;
+        const dy = f.top - l.top;
+
+        const anim = child.animate(
+          [
+            { transform: `translate(${dx}px, ${dy}px)` },
+            { transform: "translate(0, 0)" }
+          ],
+          { duration, easing: "cubic-bezier(0.25, 0.8, 0.25, 1)", fill: "both" }
+        );
+        animations.push(anim.finished);
+      });
+
+      arenaState.arr = nextArr.slice();
+      await Promise.all(animations);
+      if (label) addLog(label);
+    }
+
+    function readInputs() {
+      const n = Number(nSelect.value);
+      const alpha = parsePermutation(alphaInput.value, n);
+      const beta = parsePermutation(betaInput.value, n);
+      return { n, alpha, beta };
+    }
+
+    function resetAllArenas(n) {
+      Object.values(arenas).forEach(arenaState => {
+        setArenaClass(arenaState.el, n);
+        renderArena(arenaState, identity(n));
+      });
+      addLog(`Arenas resetadas para I = ${formatPerm(identity(n))}.`);
+    }
+
+    function setInputsForN(n) {
+      if (n === 3) {
+        alphaInput.value = "2,3,1";
+        betaInput.value = "3,1,2";
+      } else {
+        alphaInput.value = "2,1,4,3";
+        betaInput.value = "1,3,2,4";
+      }
+    }
+
+    async function withLock(task) {
+      if (isBusy) return;
+      isBusy = true;
+      try {
+        await task();
+      } catch (error) {
+        addLog(`Erro: ${error.message}`);
+      } finally {
+        isBusy = false;
+      }
+    }
+
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      const n = Number(nSelect.value);
+      clearLog();
+      resetAllArenas(n);
+    });
+
+    document.getElementById("btn-random").addEventListener("click", () => {
+      const n = Number(nSelect.value);
+      alphaInput.value = randomPermutation(n).join(",");
+      betaInput.value = randomPermutation(n).join(",");
+      addLog("alpha e beta atualizadas com permutacoes aleatorias.");
+    });
+
+    nSelect.addEventListener("change", () => {
+      const n = Number(nSelect.value);
+      setInputsForN(n);
+      clearLog();
+      resetAllArenas(n);
+    });
+
+    document.getElementById("btn-neutro").addEventListener("click", () => withLock(async () => {
+      const { n } = readInputs();
+      const randomStart = randomPermutation(n);
+      const I = identity(n);
+      clearLog();
+      resetAllArenas(n);
+      addLog(`Elemento neutro: I = ${formatPerm(I)}.`);
+      addLog(`Estado inicial arbitrario s = ${formatPerm(randomStart)}.`);
+      await animateArenaTo(arenas.main, randomStart, "Arena principal definida para s.");
+      const after = applyPermutation(randomStart, I);
+      await animateArenaTo(arenas.main, after, `Aplicando I em s: s.I = ${formatPerm(after)}.`);
+      addLog(after.join(",") === randomStart.join(",")
+        ? "Conclusao: I nao altera a ordem dos blocos."
+        : "Conclusao inesperada: revise a implementacao.");
+    }));
+
+    document.getElementById("btn-fechamento").addEventListener("click", () => withLock(async () => {
+      const { n, alpha, beta } = readInputs();
+      const I = identity(n);
+      clearLog();
+      resetAllArenas(n);
+      addLog(`Knuth: posicao i vai para alpha[i]. alpha=${formatPerm(alpha)}, beta=${formatPerm(beta)}.`);
+
+      const afterAlpha = applyPermutation(I, alpha);
+      await animateArenaTo(arenas.main, afterAlpha, `Passo 1: I.alpha = ${formatPerm(afterAlpha)}.`);
+
+      const afterBeta = applyPermutation(afterAlpha, beta);
+      await animateArenaTo(arenas.main, afterBeta, `Passo 2: (I.alpha).beta = ${formatPerm(afterBeta)}.`);
+
+      const alphaDotBeta = compose(alpha, beta);
+      addLog(`Permutacao composta alpha.beta = ${formatPerm(alphaDotBeta)}.`);
+
+      const proof = applyPermutation(I, alphaDotBeta);
+      await animateArenaTo(arenas.proof, proof, `Prova direta: I.(alpha.beta) = ${formatPerm(proof)}.`);
+
+      const valid = new Set(alphaDotBeta).size === n && alphaDotBeta.every(v => v >= 1 && v <= n);
+      addLog(valid
+        ? "Fechamento e unicidade: o resultado e uma unica permutacao valida em P."
+        : "Falha no fechamento: resultado invalido.");
+    }));
+
+    document.getElementById("btn-inverso").addEventListener("click", () => withLock(async () => {
+      const { n, alpha } = readInputs();
+      const I = identity(n);
+      const inv = inverse(alpha);
+
+      clearLog();
+      resetAllArenas(n);
+      addLog(`Permutacao alpha = ${formatPerm(alpha)}.`);
+      addLog(`Inverso alpha^-1 = ${formatPerm(inv)}.`);
+
+      const afterAlpha = applyPermutation(I, alpha);
+      await animateArenaTo(arenas.main, afterAlpha, `Aplicando alpha: I.alpha = ${formatPerm(afterAlpha)}.`);
+
+      const backToIdentity = applyPermutation(afterAlpha, inv);
+      await animateArenaTo(arenas.main, backToIdentity, `Aplicando alpha^-1: (I.alpha).alpha^-1 = ${formatPerm(backToIdentity)}.`);
+
+      addLog(backToIdentity.join(",") === I.join(",")
+        ? "Conclusao: alpha^-1 desfaz alpha e retorna a identidade."
+        : "Conclusao inesperada: resultado diferente da identidade.");
+    }));
+
+    document.getElementById("btn-nao-com").addEventListener("click", () => withLock(async () => {
+      const { n, alpha, beta } = readInputs();
+      const I = identity(n);
+      clearLog();
+      resetAllArenas(n);
+
+      addLog(`Comparando (alpha.beta) com (beta.alpha) para alpha=${formatPerm(alpha)} e beta=${formatPerm(beta)}.`);
+
+      const leftStep = applyPermutation(I, alpha);
+      const rightStep = applyPermutation(I, beta);
+      await Promise.all([
+        animateArenaTo(arenas.left, leftStep, "Esquerda passo 1: I.alpha."),
+        animateArenaTo(arenas.right, rightStep, "Direita passo 1: I.beta.")
+      ]);
+
+      const leftFinal = applyPermutation(leftStep, beta);
+      const rightFinal = applyPermutation(rightStep, alpha);
+      await Promise.all([
+        animateArenaTo(arenas.left, leftFinal, `Esquerda final: (I.alpha).beta = ${formatPerm(leftFinal)}.`),
+        animateArenaTo(arenas.right, rightFinal, `Direita final: (I.beta).alpha = ${formatPerm(rightFinal)}.`)
+      ]);
+
+      const equal = leftFinal.join(",") === rightFinal.join(",");
+      addLog(equal
+        ? "Neste exemplo especifico houve coincidencia. Tente outros alpha e beta."
+        : "Nao comutatividade visualizada: (alpha.beta) != (beta.alpha)."
+      );
+    }));
+
+    (function init() {
+      const n = Number(nSelect.value);
+      setInputsForN(n);
+      clearLog();
+      resetAllArenas(n);
+      addLog("Pronto para demonstrar propriedades de grupo em permutacoes.");
+    })();
+  </script>
+</body>
+</html>

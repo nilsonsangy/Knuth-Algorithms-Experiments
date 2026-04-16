@@ -23,7 +23,7 @@ Minimal and practical implementation of Knuth's T Algorithm for permutation gene
 py run_experiment.py
 ```
 
-2. Open the visual dashboard.
+2. Open the visual hub.
 
 - Direct file mode: open `index.html`.
 - Local server mode:
@@ -42,7 +42,9 @@ Open `http://localhost:8000`.
 | `run_experiment.py` | Thin wrapper that runs experiments and exports results |
 | `results.json` | Raw experiment data for analysis |
 | `results.js` | Browser-friendly data for local file mode |
-| `index.html` | Visual dashboard (table + chart + animated sample) |
+| `index.html` | Hub page that links to all HTML demos |
+| `algorithm_t.html` | Visual dashboard for Algorithm T (table + chart + animated sample) |
+| `propriedades-de-grupos.html` | Interactive group-properties demo for permutations |
 
 ## 🔬 Experiment Scope
 
